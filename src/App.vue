@@ -7,19 +7,39 @@
     </div>
     <div class="ui main container">
       <Myform/>
+      <CustomerList :customers="customers" />
     </div>
   </div>
 </template>
 
 <script>
 
+import axios from "axios";
 import Myform from "./components/Myform";
+import CustomerList from "./components/CustomerList";
 export default {
   name: 'App',
   components: {
-    Myform
+    Myform,
+    CustomerList
+  },
+  data() {
+    return{
+      url:"http://localhost/phpmyadmin/sql.php?server=1&db=laravel_api&table=customer&pos=0",
+      customer:[]
+    };
+  },
+  methods:{
+    getCustomers(){
+      axios.get(this.url).then(data=>{
+        this.customers= data.data;
+      });
+    }
+  },
+  created(){
+    this.getCustomers();
   }
-}
+};
 </script>
 
 <style>
